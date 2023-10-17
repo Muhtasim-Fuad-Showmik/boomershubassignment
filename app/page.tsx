@@ -26,7 +26,30 @@ export default function Home() {
 
   // Property functions
 
-  async function addProperty() {}
+  /**
+   * FUnction for inserting data into the MySQL database
+   *
+   * @param property new property object to be inserted into the database
+   */
+  async function addProperty(property: Property) {
+    // Header configuration to send along with the fetch call
+    const fetchConfig = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(property),
+    };
+
+    // Retrieve all properties from the database
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_URL}/api/properties`,
+      fetchConfig
+    );
+    const response = await res.json();
+
+    if (response.response.message !== "success") return;
+  }
 
   /**
    * Get all properties listed in our MySQL database
@@ -51,9 +74,7 @@ export default function Home() {
     setProperties(response.properties);
   }
 
-  async function updateProperty() {}
-
-  async function deleteProperty() {}
+  async function clearProperties() {}
 
   useEffect(() => {
     getProperties();
