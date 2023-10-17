@@ -86,7 +86,7 @@ export default function Home() {
           </thead>
           <tbody>
             {properties.map((property, index) => (
-              <tr className="border-r-2 shadow-md bg-white">
+              <tr className="border-r-2 shadow-md bg-white" key={index}>
                 <td className="text-left px-4 py-2">{property.Name}</td>
                 <td className="text-left px-4 py-2">{property.Address}</td>
                 <td className="text-left px-4 py-2">{property.City}</td>
