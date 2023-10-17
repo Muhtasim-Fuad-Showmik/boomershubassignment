@@ -17,15 +17,14 @@ interface Property {
 
 export default function Home() {
   // References
-  const nameRef = useRef();
-  const cityRef = useRef();
-  const stateRef = useRef();
+  const nameRef = useRef(null);
+  const cityRef = useRef(null);
+  const stateRef = useRef(null);
 
   // States
   const [properties, setProperties] = useState<Array<Property>>([]);
 
   // Property functions
-
   /**
    * FUnction for inserting data into the MySQL database
    *
@@ -74,7 +73,25 @@ export default function Home() {
     setProperties(response.properties);
   }
 
-  async function clearProperties() {}
+  /**
+   * Delete all properties from the database
+   */
+  async function deleteProperties() {
+    // Header configuration to send along with the fetch call
+    const fetchConfig = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    // Retrieve all properties from the database
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_URL}/api/properties`,
+      fetchConfig
+    );
+    const response = await res.json();
+  }
 
   useEffect(() => {
     getProperties();
@@ -86,9 +103,24 @@ export default function Home() {
 
       <div className="flex w-80 flex-col items-center justify-start">
         <div className="flex justify-start gap-4 mb-4">
-          <input className="p-2 rounded-sm" type="text" placeholder="Name" />
-          <input className="p-2 rounded-sm" type="text" placeholder="City" />
-          <input className="p-2 rounded-sm" type="text" placeholder="State" />
+          <input
+            className="p-2 rounded-sm"
+            type="text"
+            placeholder="Name"
+            ref={nameRef}
+          />
+          <input
+            className="p-2 rounded-sm"
+            type="text"
+            placeholder="City"
+            ref={cityRef}
+          />
+          <input
+            className="p-2 rounded-sm"
+            type="text"
+            placeholder="State"
+            ref={stateRef}
+          />
           <button className="bg-slate-400 hover:bg-slate-300 px-4 py-2 rounded-md">
             Search
           </button>

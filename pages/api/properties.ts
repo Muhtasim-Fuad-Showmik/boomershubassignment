@@ -88,4 +88,20 @@ export default async function handler(
       res.status(400).json({ message, property: {} });
     }
   }
+
+  // Delete all properties for DELETE requests
+  if (req.method == "DELETE") {
+    const deletedProducts = await query({
+      query: "DELETE * FROM long_term_care_providers",
+      values: [],
+    });
+
+    // Setup success/error messages
+    if ("affectedRows" in deletedProducts && deletedProducts.affectedRows) {
+      message = "success";
+    } else {
+      message = "error";
+    }
+    res.status(200).json({ message });
+  }
 }
