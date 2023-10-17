@@ -2,6 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 
+interface Property {
+  Id: number;
+  Name: string;
+  Address: string;
+  City: string;
+  State: string;
+  Zip_Code: number;
+  County: string;
+  Phone: string;
+  Type: string;
+  Capacity: number;
+}
+
 export default function Home() {
   // References
   const nameRef = useRef();
@@ -9,28 +22,37 @@ export default function Home() {
   const stateRef = useRef();
 
   // States
-  const [properties, setProperties] = useState([]);
+  const [properties, setProperties] = useState<Array<Property>>([]);
 
   // Property functions
+
   async function addProperty() {}
 
   /**
    * Get all properties listed in our MySQL database
    */
   async function getProperties() {
-    const postData = {
+    // Header configuration to send along with the fetch call
+    const fetchConfig = {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     };
 
+    // Retrieve all properties from the database
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_URL}/api/properties`,
-      postData
+      fetchConfig
     );
+    const response = await res.json();
+
+    // Update properties state to store all retrieved properties
+    setProperties(response.properties);
   }
+
   async function updateProperty() {}
+
   async function deleteProperty() {}
 
   useEffect(() => {
@@ -63,15 +85,17 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-r-2 shadow-md bg-white">
-              <td className="text-left px-4 py-2">Brooksdale Creekside</td>
-              <td className="text-left px-4 py-2">2000 W Spring Creek PKWY</td>
-              <td className="text-left px-4 py-2">Plano</td>
-              <td className="text-left px-4 py-2">Texas</td>
-              <td className="text-left px-4 py-2">75203</td>
-              <td className="text-left px-4 py-2">Collin</td>
-              <td className="text-left px-4 py-2">Assisted Living Type B</td>
-            </tr>
+            {properties.map((property, index) => (
+              <tr className="border-r-2 shadow-md bg-white">
+                <td className="text-left px-4 py-2">{property.Name}</td>
+                <td className="text-left px-4 py-2">{property.Address}</td>
+                <td className="text-left px-4 py-2">{property.City}</td>
+                <td className="text-left px-4 py-2">{property.State}</td>
+                <td className="text-left px-4 py-2">{property.Zip_Code}</td>
+                <td className="text-left px-4 py-2">{property.County}</td>
+                <td className="text-left px-4 py-2">{property.Type}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

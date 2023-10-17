@@ -1,6 +1,14 @@
 import { query } from "@/lib/db";
 import { NextApiRequest, NextApiResponse } from "next";
 
+/**
+ * API Handler function for getting all properties from the
+ * MySQL database
+ *
+ * @param req request data
+ * @param res response data
+ * @returns JSON object containing all properties
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
