@@ -89,60 +89,68 @@ export default function Page({ params }: Params) {
     <div className="flex min-h-screen flex-col items-center justify-start p-24">
       <h1 className="text-3xl text-center mb-12">Long-Term Care Providers</h1>
 
-      <div className="w-[400px] mb-2">
-        <Carousel>
-          {images.map((image) => (
-            <div key={image.Id}>
-              <img src={image.Image_URL} />
-            </div>
-          ))}
-        </Carousel>
-      </div>
+      <div className="flex items-start justify-between w-full">
+        <div className="flex flex-col items-center justify-start w-1/2">
+          <div className="w-[400px] mb-2">
+            <Carousel>
+              {images.map((image) => (
+                <div key={image.Id}>
+                  <img src={image.Image_URL} />
+                </div>
+              ))}
+            </Carousel>
+          </div>
 
-      <div className="w-[400px] mb-12">
-        <h2 className="text-xl text-left mb-2">Ownership Information</h2>
-        <table>
-          <tbody>
-            <tr>
-              <td className="font-bold w-24">Name: </td>
-              <td>{property?.Name}</td>
-            </tr>
-            <tr>
-              <td className="font-bold w-24">Address: </td>
-              <td>{property?.Address}</td>
-            </tr>
-            <tr>
-              <td className="font-bold w-24">City: </td>
-              <td>
-                {property?.City} - {property?.Zip_Code}
-              </td>
-            </tr>
-            <tr>
-              <td className="font-bold w-24">County: </td>
-              <td>{property?.County}</td>
-            </tr>
-            <tr>
-              <td className="font-bold w-24">Phone: </td>
-              <td>{property?.Phone}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+          <div className="w-[400px] mb-12">
+            <h2 className="text-xl text-left mb-2">Ownership Information</h2>
+            <table>
+              <tbody>
+                <tr>
+                  <td className="font-bold w-24">Name: </td>
+                  <td>{property?.Name}</td>
+                </tr>
+                <tr>
+                  <td className="font-bold w-24">Address: </td>
+                  <td>{property?.Address}</td>
+                </tr>
+                <tr>
+                  <td className="font-bold w-24">City: </td>
+                  <td>
+                    {property?.City} - {property?.Zip_Code}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="font-bold w-24">County: </td>
+                  <td>{property?.County}</td>
+                </tr>
+                <tr>
+                  <td className="font-bold w-24">Phone: </td>
+                  <td>{property?.Phone}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-      <div className="w-[400px] mb-12">
-        <h2 className="text-xl text-left mb-2">Facility Description</h2>
-        <table>
-          <tbody>
-            <tr>
-              <td className="font-bold w-24">Type:</td>
-              <td>{property?.Type}</td>
-            </tr>
-            <tr>
-              <td className="font-bold w-24">Capacity:</td>
-              <td>{property?.Capacity}</td>
-            </tr>
-          </tbody>
-        </table>
+          <div className="w-[400px] mb-12">
+            <h2 className="text-xl text-left mb-2">Facility Description</h2>
+            <table>
+              <tbody>
+                <tr>
+                  <td className="font-bold w-24">Type:</td>
+                  <td>{property?.Type}</td>
+                </tr>
+                <tr>
+                  <td className="font-bold w-24">Capacity:</td>
+                  <td>{property?.Capacity}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center justify-start w-1/2">
+          MapBox
+        </div>
       </div>
     </div>
   );
