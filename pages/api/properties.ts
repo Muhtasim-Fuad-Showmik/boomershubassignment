@@ -27,6 +27,18 @@ export default async function handler(
   res: NextApiResponse
 ) {
   let message = "";
+  const propertyImages: { [key: string]: Array<string> } = {
+    "Brookdale Creekside": [
+      "https://boomershub-images.s3.ap-south-1.amazonaws.com/Brookdale+Creekside/brookdale-creekside-1-entrance_sd.jpg",
+      "https://boomershub-images.s3.ap-south-1.amazonaws.com/Brookdale+Creekside/brookdale-creekside-4-bedroom_sd.jpg",
+      "https://boomershub-images.s3.ap-south-1.amazonaws.com/Brookdale+Creekside/brookdale-creekside-5-living-room_sd.jpg",
+    ],
+    "The Delaney at Georgetown Village": [
+      "https://boomershub-images.s3.ap-south-1.amazonaws.com/The+Delaney+At+Georgetown+Village/TheDelaneyAtGeorgetownVillage_photos_01_Seniorly_sd.png",
+      "https://boomershub-images.s3.ap-south-1.amazonaws.com/The+Delaney+At+Georgetown+Village/TheDelaneyAtGeorgetownVillage_photos_03_Seniorly_sd.png",
+      "https://boomershub-images.s3.ap-south-1.amazonaws.com/The+Delaney+At+Georgetown+Village/TheDelaneyAtGeorgetownVillage_photos_05_Seniorly_sd.png",
+    ],
+  };
 
   // Get all properties for GET requests
   if (req.method == "GET") {
@@ -91,10 +103,8 @@ export default async function handler(
 
     // Setup a message based on execution success or failure
     if ("insertId" in addedProperty && addedProperty.insertId) {
-      message = "success";
-
       // Prepare the new property data for successful creation
-      let property = {
+      const property = {
         Id: addedProperty.insertId,
         Name: propertyData.Name,
         Address: propertyData.Address,
@@ -107,23 +117,51 @@ export default async function handler(
         Capacity: propertyData.Capacity,
       };
 
-      // Send data back with success message
-      res.status(200).json({ message, property });
-    } else {
-      message = "error";
-      res.status(400).json({ message, property: {} });
+      // Add relevant images to the database
+      let addedImages = {};
+      if (propertyData.Name in propertyImages) {
+        propertyImages[property.Name].forEach(async (url) => {
+          // Execute insert query to insert image URLs into the MySQL database
+          addedImages = await query({
+            query:
+              "INSERT INTO `images` (" +
+              "`Long_Term_Care_Provider_Id`, `Image_URL`" +
+              ") " +
+              "VALUES (?,?);",
+            values: [property.Id, url],
+          });
+        });
+      }
+
+      if ("insertId" in addedImages && addedImages.insertId) {
+        message = "success";
+
+        // Send data back with success message
+        res.status(200).json({ message, property, addedImages });
+      }
     }
+    res.status(400).json({ message, property: {}, addedImages: {} });
   }
 
   // Delete all properties for DELETE requests
   if (req.method == "DELETE") {
+    const deletedImages = await query({
+      query: "DELETE FROM images",
+      values: [],
+    });
+
     const deletedProducts = await query({
-      query: "DELETE * FROM long_term_care_providers",
+      query: "DELETE FROM long_term_care_providers",
       values: [],
     });
 
     // Setup success/error messages
-    if ("affectedRows" in deletedProducts && deletedProducts.affectedRows) {
+    if (
+      "affectedRows" in deletedProducts &&
+      deletedProducts.affectedRows &&
+      "affectedRows" in deletedImages &&
+      deletedImages.affectedRows
+    ) {
       message = "success";
     } else {
       message = "error";

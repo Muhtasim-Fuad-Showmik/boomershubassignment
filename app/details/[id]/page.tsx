@@ -53,7 +53,6 @@ export default function Page({ params }: Params) {
       fetchConfig
     );
     const response = await res.json();
-    console.log("🚀 ~ file: page.tsx:47 ~ getProperty ~ response:", response);
 
     // Update property state to store the retrieved property
     setProperty(response.property[0]);
@@ -103,42 +102,46 @@ export default function Page({ params }: Params) {
       <div className="w-[400px] mb-12">
         <h2 className="text-xl text-left mb-2">Ownership Information</h2>
         <table>
-          <tr>
-            <td className="font-bold w-24">Name: </td>
-            <td>{property?.Name}</td>
-          </tr>
-          <tr>
-            <td className="font-bold w-24">Address: </td>
-            <td>{property?.Address}</td>
-          </tr>
-          <tr>
-            <td className="font-bold w-24">City: </td>
-            <td>
-              {property?.City} - {property?.Zip_Code}
-            </td>
-          </tr>
-          <tr>
-            <td className="font-bold w-24">County: </td>
-            <td>{property?.County}</td>
-          </tr>
-          <tr>
-            <td className="font-bold w-24">Phone: </td>
-            <td>{property?.Phone}</td>
-          </tr>
+          <tbody>
+            <tr>
+              <td className="font-bold w-24">Name: </td>
+              <td>{property?.Name}</td>
+            </tr>
+            <tr>
+              <td className="font-bold w-24">Address: </td>
+              <td>{property?.Address}</td>
+            </tr>
+            <tr>
+              <td className="font-bold w-24">City: </td>
+              <td>
+                {property?.City} - {property?.Zip_Code}
+              </td>
+            </tr>
+            <tr>
+              <td className="font-bold w-24">County: </td>
+              <td>{property?.County}</td>
+            </tr>
+            <tr>
+              <td className="font-bold w-24">Phone: </td>
+              <td>{property?.Phone}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
 
       <div className="w-[400px] mb-12">
         <h2 className="text-xl text-left mb-2">Facility Description</h2>
         <table>
-          <tr>
-            <td className="font-bold w-24">Type:</td>
-            <td>{property?.Type}</td>
-          </tr>
-          <tr>
-            <td className="font-bold w-24">Capacity:</td>
-            <td>{property?.Capacity}</td>
-          </tr>
+          <tbody>
+            <tr>
+              <td className="font-bold w-24">Type:</td>
+              <td>{property?.Type}</td>
+            </tr>
+            <tr>
+              <td className="font-bold w-24">Capacity:</td>
+              <td>{property?.Capacity}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>

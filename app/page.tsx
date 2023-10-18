@@ -48,7 +48,7 @@ export default function Home() {
     );
     const response = await res.json();
 
-    if (response.response.message !== "success") return;
+    if (response.message !== "success") return;
   }
 
   /**
@@ -118,17 +118,19 @@ export default function Home() {
     const response = await res.json();
 
     // Clear database of all existing properties
-    // deleteProperties();
-
-    // Add each property scraped from the external sources
-    for (const [key, property] of Object.entries(
-      response.properties as Property[]
-    )) {
-      addProperty(property);
-    }
-
-    // Retrieve all properties again from the database
-    getProperties();
+    deleteProperties()
+      .then(async () => {
+        // Add each property scraped from the external sources
+        for (const [key, property] of Object.entries(
+          response.properties as Property[]
+        )) {
+          await addProperty(property);
+        }
+      })
+      .then(() => {
+        // Retrieve all properties again from the database
+        getProperties();
+      });
   }
 
   useEffect(() => {
@@ -140,7 +142,7 @@ export default function Home() {
       <h1 className="text-3xl text-center mb-12">Long-Term Care Providers</h1>
 
       <div className="flex w-[90%] flex-col items-center justify-start">
-        <div className="flex justify-start gap-4 mb-4">
+        <div className="flex w-full justify-center gap-4 mb-4">
           <input
             className="p-2 rounded-sm"
             type="text"
@@ -196,15 +198,15 @@ export default function Home() {
           <tbody>
             {properties.map((property, index) => (
               <tr className="border-r-2 shadow-md bg-white" key={index}>
-                <Link
-                  key={index}
-                  href={`/details/${property.Id}`}
-                  className="w-full inline-block"
-                >
-                  <td className="text-left underline text-blue-400 px-4 py-2">
+                <td className="text-left underline text-blue-400 px-4 py-2">
+                  <Link
+                    key={index}
+                    href={`/details/${property.Id}`}
+                    className="w-full inline-block"
+                  >
                     {property.Name}
-                  </td>
-                </Link>
+                  </Link>
+                </td>
                 <td className="text-left px-4 py-2">{property.Address}</td>
                 <td className="text-left px-4 py-2">{property.City}</td>
                 <td className="text-left px-4 py-2">{property.State}</td>
