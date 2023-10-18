@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 interface Property {
   Id: number;
@@ -84,8 +85,6 @@ export default function Home() {
       fetchConfig
     );
     const response = await res.json();
-    console.log("🚀 ~ file: page.tsx:79 ~ getProperties ~ response:", response);
-
     // Update properties state to store all retrieved properties
     setProperties(response.properties);
   }
@@ -140,7 +139,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
       <h1 className="text-3xl text-center mb-12">Long-Term Care Providers</h1>
 
-      <div className="flex w-80 flex-col items-center justify-start">
+      <div className="flex w-[90%] flex-col items-center justify-start">
         <div className="flex justify-start gap-4 mb-4">
           <input
             className="p-2 rounded-sm"
@@ -173,7 +172,7 @@ export default function Home() {
             Scrape
           </button>
         </div>
-        <table className="w-[1300px] text-center">
+        <table className="w-full text-center">
           <thead>
             <tr className="border-r-2 bg-slate-500 text-white">
               <th className="text-left px-4 py-2">Name</th>
@@ -188,7 +187,15 @@ export default function Home() {
           <tbody>
             {properties.map((property, index) => (
               <tr className="border-r-2 shadow-md bg-white" key={index}>
-                <td className="text-left px-4 py-2">{property.Name}</td>
+                <Link
+                  key={index}
+                  href={`/details/${property.Id}`}
+                  className="w-full inline-block"
+                >
+                  <td className="text-left underline text-blue-400 px-4 py-2">
+                    {property.Name}
+                  </td>
+                </Link>
                 <td className="text-left px-4 py-2">{property.Address}</td>
                 <td className="text-left px-4 py-2">{property.City}</td>
                 <td className="text-left px-4 py-2">{property.State}</td>
