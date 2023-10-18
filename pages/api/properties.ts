@@ -27,12 +27,32 @@ export default async function handler(
   res: NextApiResponse
 ) {
   let message = "";
-  let properties = [];
 
   // Get all properties for GET requests
   if (req.method == "GET") {
+    // Prepared default whenClause and conditions variables
+    let whereClause = "";
+    const conditions: Array<string> = [];
+
+    // Prepare the conditions that may need to be added
+    const { name, city, state } = req.query;
+    if (name) conditions.push(`Name = '${name}'`);
+    if (city) conditions.push(`City = '${city}'`);
+    if (state) conditions.push(`State = '${state}'`);
+
+    // Concatenate conditions by 'AND' to the where clause
+    if (conditions.length > 0) {
+      whereClause = "WHERE " + conditions.join(" AND ");
+    }
+
+    console.log(
+      "query",
+      `SELECT * FROM long_term_care_providers ${whereClause}`
+    );
+
+    // Retrieve data from database and respond with its JSON object
     const properties = await query({
-      query: "SELECT * FROM long_term_care_providers",
+      query: `SELECT * FROM long_term_care_providers ${whereClause}`,
       values: [],
     });
     res.status(200).json({ properties });

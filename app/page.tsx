@@ -17,9 +17,9 @@ interface Property {
 
 export default function Home() {
   // References
-  const nameRef = useRef(null);
-  const cityRef = useRef(null);
-  const stateRef = useRef(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const cityRef = useRef<HTMLInputElement>(null);
+  const stateRef = useRef<HTMLInputElement>(null);
 
   // States
   const [properties, setProperties] = useState<Array<Property>>([]);
@@ -54,6 +54,22 @@ export default function Home() {
    * Get all properties listed in our MySQL database
    */
   async function getProperties() {
+    let queryParamsString = "";
+    const queryParams: Array<string> = [];
+
+    // Collect all of the search parameters
+    if (nameRef.current && nameRef.current.value)
+      queryParams.push(`name=${nameRef.current.value}`);
+    if (cityRef.current && cityRef.current.value)
+      queryParams.push(`city=${cityRef.current.value}`);
+    if (stateRef.current && stateRef.current.value)
+      queryParams.push(`state=${stateRef.current.value}`);
+
+    // Generate query params string url extension
+    if (queryParams.length > 0) {
+      queryParamsString = "?" + queryParams.join("&");
+    }
+
     // Header configuration to send along with the fetch call
     const fetchConfig = {
       method: "GET",
@@ -64,10 +80,11 @@ export default function Home() {
 
     // Retrieve all properties from the database
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_URL}/api/properties`,
+      `${process.env.NEXT_PUBLIC_URL}/api/properties${queryParamsString}`,
       fetchConfig
     );
     const response = await res.json();
+    console.log("🚀 ~ file: page.tsx:79 ~ getProperties ~ response:", response);
 
     // Update properties state to store all retrieved properties
     setProperties(response.properties);
@@ -93,13 +110,35 @@ export default function Home() {
     const response = await res.json();
   }
 
+  // Scrape function
+  async function scrapeProperties() {
+    // Retrieve all properties from the database
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_URL}/api/scrapeProperties`
+    );
+    const response = await res.json();
+
+    // Clear database of all existing properties
+    // deleteProperties();
+
+    // Add each property scraped from the external sources
+    for (const [key, property] of Object.entries(
+      response.properties as Property[]
+    )) {
+      addProperty(property);
+    }
+
+    // Retrieve all properties again from the database
+    getProperties();
+  }
+
   useEffect(() => {
     getProperties();
-  });
+  }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
-      <h1 className="text-3xl mb-12">Long-Term Care Providers</h1>
+      <h1 className="text-3xl text-center mb-12">Long-Term Care Providers</h1>
 
       <div className="flex w-80 flex-col items-center justify-start">
         <div className="flex justify-start gap-4 mb-4">
@@ -121,11 +160,20 @@ export default function Home() {
             placeholder="State"
             ref={stateRef}
           />
-          <button className="bg-slate-400 hover:bg-slate-300 px-4 py-2 rounded-md">
+          <button
+            onClick={getProperties}
+            className="bg-sky-400 hover:bg-sky-300 px-4 py-2 rounded-md font-bold"
+          >
             Search
           </button>
+          <button
+            onClick={scrapeProperties}
+            className="bg-lime-500 hover:bg-lime-400 px-4 py-2 rounded-md font-bold"
+          >
+            Scrape
+          </button>
         </div>
-        <table className="w-[1100px] text-center">
+        <table className="w-[1300px] text-center">
           <thead>
             <tr className="border-r-2 bg-slate-500 text-white">
               <th className="text-left px-4 py-2">Name</th>

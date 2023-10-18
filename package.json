@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "jsdom": "^22.1.0",
     "mysql2": "^3.6.2",
     "next": "13.5.5",
     "react": "^18",
