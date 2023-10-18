@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 interface Property {
   Id: number;
@@ -88,10 +90,14 @@ export default function Page({ params }: Params) {
     <div className="flex min-h-screen flex-col items-center justify-start p-24">
       <h1 className="text-3xl text-center mb-12">Long-Term Care Providers</h1>
 
-      <div className="w-[400px] mb-12">
-        {images.map((image, index) => (
-          <img src={image.Image_URL} key={index} />
-        ))}
+      <div className="w-[400px] mb-2">
+        <Carousel>
+          {images.map((image) => (
+            <div key={image.Id}>
+              <img src={image.Image_URL} />
+            </div>
+          ))}
+        </Carousel>
       </div>
 
       <div className="w-[400px] mb-12">
@@ -110,10 +116,6 @@ export default function Page({ params }: Params) {
             <td>
               {property?.City} - {property?.Zip_Code}
             </td>
-          </tr>
-          <tr>
-            <td className="font-bold w-24">State: </td>
-            <td>{property?.State}</td>
           </tr>
           <tr>
             <td className="font-bold w-24">County: </td>
