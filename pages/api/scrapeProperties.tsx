@@ -35,33 +35,33 @@ const scrapeProperties = async (req: NextApiRequest, res: NextApiResponse) => {
     const dom = new JSDOM(html);
     const document = dom.window.document;
 
-    const mainParagraphContent = document
-      .querySelector(".fa-home")
-      .parentElement.textContent.split(/\r?\n/);
+    const mainParagraphContent = document!
+      .querySelector(".fa-home")!
+      .parentElement!.textContent!.split(/\r?\n/);
     const detailedCity = mainParagraphContent[1].split(",");
-    const facilityDescription = document
-      .querySelector("#p7TP3c1_1")
-      .getElementsByTagName("ul")[0].children;
+    const facilityDescription = document!
+      .querySelector("#p7TP3c1_1")!
+      .getElementsByTagName("ul")[0].children!;
 
-    const Name = document.querySelector("h1.first")?.textContent;
+    const Name = document.querySelector("h1.first")?.textContent!;
     const Address = mainParagraphContent[0].trim();
     const City = detailedCity[0].trim();
-    const Zip_Code = detailedCity[1].split(" ")[2].trim();
+    const Zip_Code = detailedCity[1].split(" ")[2].trim()!;
     const County = mainParagraphContent[2].replace(" County", "");
     const Phone = mainParagraphContent[3].trim();
-    const Type = facilityDescription[0].textContent.split(":")[1].trim();
-    const Capacity = facilityDescription[1].textContent.split(":")[1].trim();
+    const Type = facilityDescription[0].textContent!.split(":")[1].trim();
+    const Capacity = facilityDescription[1].textContent!.split(":")[1].trim();
 
     const property: Property = {
       Name,
       Address,
       City,
       State: "Texas",
-      Zip_Code,
+      Zip_Code: parseInt(Zip_Code),
       County,
       Phone,
       Type,
-      Capacity,
+      Capacity: parseInt(Capacity),
     };
 
     properties[key] = property;
