@@ -109,7 +109,7 @@ export default function Home() {
     const response = await res.json();
   }
 
-  // Scrape function
+  // Button functionalities
   async function scrapeProperties() {
     // Retrieve all properties from the database
     const res = await fetch(
@@ -146,18 +146,27 @@ export default function Home() {
             type="text"
             placeholder="Name"
             ref={nameRef}
+            onKeyUp={(e) => {
+              if (e.key == "Enter") getProperties();
+            }}
           />
           <input
             className="p-2 rounded-sm"
             type="text"
             placeholder="City"
             ref={cityRef}
+            onKeyUp={(e) => {
+              if (e.key == "Enter") getProperties();
+            }}
           />
           <input
             className="p-2 rounded-sm"
             type="text"
             placeholder="State"
             ref={stateRef}
+            onKeyUp={(e) => {
+              if (e.key == "Enter") getProperties();
+            }}
           />
           <button
             onClick={getProperties}
