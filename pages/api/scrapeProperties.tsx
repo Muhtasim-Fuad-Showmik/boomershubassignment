@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { JSDOM } from "jsdom";
+import { webURLs } from "@/constants";
 
 interface Property {
   Name: string;
@@ -12,13 +13,6 @@ interface Property {
   Type: string;
   Capacity: number;
 }
-
-const webURLs: { [key: string]: string } = {
-  delaney:
-    "https://apps.hhs.texas.gov/LTCSearch/providerdetail.cfm?pid=106705&protype=Assisted%20Living&subtype=TYPE%20B&lang=EN",
-  brookdale:
-    "https://apps.hhs.texas.gov/LTCSearch/providerdetail.cfm?pid=030404&protype=Assisted%20Living&subtype=TYPE%20B&lang=EN",
-};
 
 /**
  * Collect data for a specified care provider
