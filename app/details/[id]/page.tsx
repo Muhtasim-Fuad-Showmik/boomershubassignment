@@ -15,6 +15,12 @@ interface Property {
   Capacity: number;
 }
 
+interface Image {
+  Id: number;
+  Long_Term_Care_Provider_Id: number;
+  Image_URL: string;
+}
+
 interface Params {
   params: { id: number };
 }
@@ -22,8 +28,9 @@ interface Params {
 export default function Page({ params }: Params) {
   // States
   const [property, setProperty] = useState<Property | null>(null);
+  const [images, setImages] = useState<Image[]>([]);
 
-  // Property functions
+  // API functions
   /**
    * Get the specified proerty from the MySQL database
    */
@@ -50,13 +57,42 @@ export default function Page({ params }: Params) {
     setProperty(response.property[0]);
   }
 
+  /**
+   * Get all images for the specified property from our MySQL database
+   */
+  async function getImages() {
+    // Header configuration to send along with the fetch call
+    const fetchConfig = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    // Retrieve all properties from the database
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_URL}/api/images?id=${params.id}`,
+      fetchConfig
+    );
+    const response = await res.json();
+    // Update properties state to store all retrieved properties
+    setImages(response.images);
+  }
+
   useEffect(() => {
     getProperty();
+    getImages();
   }, []);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-start p-24">
       <h1 className="text-3xl text-center mb-12">Long-Term Care Providers</h1>
+
+      <div className="w-[400px] mb-12">
+        {images.map((image, index) => (
+          <img src={image.Image_URL} key={index} />
+        ))}
+      </div>
 
       <div className="w-[400px] mb-12">
         <h2 className="text-xl text-left mb-2">Ownership Information</h2>
