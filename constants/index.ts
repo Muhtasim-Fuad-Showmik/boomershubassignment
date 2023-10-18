@@ -9,6 +9,11 @@ export const propertyImages: { [key: string]: Array<string> } = {
     "https://boomershub-images.s3.ap-south-1.amazonaws.com/The+Delaney+At+Georgetown+Village/TheDelaneyAtGeorgetownVillage_photos_03_Seniorly_sd.png",
     "https://boomershub-images.s3.ap-south-1.amazonaws.com/The+Delaney+At+Georgetown+Village/TheDelaneyAtGeorgetownVillage_photos_05_Seniorly_sd.png",
   ],
+  "Landing at Watermere Frisco": [
+    "https://boomershub-images.s3.ap-south-1.amazonaws.com/Landing+at+Watermere+Frisco/DiscoveryVillageatSouthLake_Photos_03_Seniorly_sd.jpg",
+    "https://boomershub-images.s3.ap-south-1.amazonaws.com/Landing+at+Watermere+Frisco/DiscoveryVillageatSouthLake_Photos_09_Seniorly_sd.png",
+    "https://boomershub-images.s3.ap-south-1.amazonaws.com/Landing+at+Watermere+Frisco/DiscoveryVillageatSouthLake_Photos_10_Seniorly_sd.png",
+  ],
 };
 
 export const webURLs: { [key: string]: string } = {
@@ -16,4 +21,6 @@ export const webURLs: { [key: string]: string } = {
     "https://apps.hhs.texas.gov/LTCSearch/providerdetail.cfm?pid=106705&protype=Assisted%20Living&subtype=TYPE%20B&lang=EN",
   brookdale:
     "https://apps.hhs.texas.gov/LTCSearch/providerdetail.cfm?pid=030404&protype=Assisted%20Living&subtype=TYPE%20B&lang=EN",
+  watermere:
+    "https://apps.hhs.texas.gov/LTCSearch/providerdetail.cfm?pid=106761&protype=Assisted%20Living&subtype=TYPE%20B&lang=EN",
 };
