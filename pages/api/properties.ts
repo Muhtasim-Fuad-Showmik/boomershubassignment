@@ -47,9 +47,9 @@ export default async function handler(
 
       // Prepare the conditions that may need to be added
       const { name, city, state } = req.query;
-      if (name) conditions.push(`Name = '${name}'`);
-      if (city) conditions.push(`City = '${city}'`);
-      if (state) conditions.push(`State = '${state}'`);
+      if (name) conditions.push(`Name LIKE '%${name}%'`);
+      if (city) conditions.push(`City LIKE '%${city}%'`);
+      if (state) conditions.push(`State LIKE '%${state}%'`);
 
       // Concatenate conditions by 'AND' to the where clause
       if (conditions.length > 0) {
