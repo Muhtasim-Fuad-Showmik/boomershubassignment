@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import MapComponent from "@/components/mapComponent";
 
 interface Property {
   Id: number;
@@ -31,6 +32,7 @@ export default function Page({ params }: Params) {
   // States
   const [property, setProperty] = useState<Property | null>(null);
   const [images, setImages] = useState<Image[]>([]);
+  const [loaded, setLoaded] = useState<boolean>(false);
 
   // API functions
   /**
@@ -56,6 +58,7 @@ export default function Page({ params }: Params) {
 
     // Update property state to store the retrieved property
     setProperty(response.property[0]);
+    setLoaded(true);
   }
 
   /**
@@ -86,11 +89,11 @@ export default function Page({ params }: Params) {
   }, []);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-start p-24">
+    <div className="flex h-full flex-col items-center justify-start p-12 pb-16">
       <h1 className="text-3xl text-center mb-12">Long-Term Care Providers</h1>
 
-      <div className="flex items-start justify-between w-full">
-        <div className="flex flex-col items-center justify-start w-1/2">
+      <div className="flex items-start justify-between w-full h-full">
+        <div className="flex flex-col items-center justify-start w-1/2 h-full">
           <div className="w-[400px] mb-2">
             <Carousel>
               {images.map((image) => (
@@ -148,9 +151,11 @@ export default function Page({ params }: Params) {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-start w-1/2">
-          MapBox
-        </div>
+        {loaded && (
+          <div className="flex flex-col items-center justify-start w-1/2 h-full">
+            <MapComponent address={property?.Address} loaded={loaded} />
+          </div>
+        )}
       </div>
     </div>
   );
