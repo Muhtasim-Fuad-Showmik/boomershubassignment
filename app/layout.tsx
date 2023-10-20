@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Nunito } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+// Add Nunito font to the application
+const nunito = Nunito({ subsets: ["latin"] });
 
+// Prepare the Metadata for the application
 export const metadata: Metadata = {
   title: "Long-Term Care Providers",
   description: "Search for long-term care providers",
@@ -16,7 +18,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className} suppressHydrationWarning={true}>
+      <body className={nunito.className} suppressHydrationWarning={true}>
+        <div className="mb-8 py-4 w-screen bg-lava text-white">
+          <h1 className="text-3xl text-center">Long-Term Care Providers</h1>
+        </div>
         {children}
       </body>
     </html>

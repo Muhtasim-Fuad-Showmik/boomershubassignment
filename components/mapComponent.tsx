@@ -34,7 +34,7 @@ export default function mapComponent(props: Props) {
   }
 
   return (
-    <div className="text-black relative w-full h-full rounded-lg overflow-hidden">
+    <div className="text-black relative w-full h-full rounded-lg overflow-hidden shadow-md">
       {props.loaded && geoData[0] && geoData[1] ? (
         <Map
           mapboxAccessToken={mapboxAccessToken}
@@ -43,7 +43,7 @@ export default function mapComponent(props: Props) {
             latitude: geoData[1],
             zoom: 14,
           }}
-          style={{ width: 600, height: 730, borderRadius: 10 }}
+          style={{ width: "100%", height: 756, borderRadius: 10 }}
           mapStyle="mapbox://styles/mapbox/streets-v9"
         >
           <Marker longitude={geoData[0]} latitude={geoData[1]} anchor="bottom">

@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass, faTrowel } from "@fortawesome/free-solid-svg-icons";
 
 interface Property {
   Id: number;
@@ -138,54 +140,55 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start p-24">
-      <h1 className="text-3xl text-center mb-12">Long-Term Care Providers</h1>
+    <main className="flex flex-col h-full w-screen items-center justify-start px-12 pb-14">
+      <div className="flex w-full justify-center gap-4 my-12">
+        <input
+          className="px-6 py-2 rounded-md shadow-md"
+          type="text"
+          placeholder="Name"
+          ref={nameRef}
+          onKeyUp={(e) => {
+            if (e.key == "Enter") getProperties();
+          }}
+        />
+        <input
+          className="px-6 py-2 rounded-md shadow-md"
+          type="text"
+          placeholder="City"
+          ref={cityRef}
+          onKeyUp={(e) => {
+            if (e.key == "Enter") getProperties();
+          }}
+        />
+        <input
+          className="px-6 py-2 rounded-md shadow-md"
+          type="text"
+          placeholder="State"
+          ref={stateRef}
+          onKeyUp={(e) => {
+            if (e.key == "Enter") getProperties();
+          }}
+        />
+        <button
+          onClick={getProperties}
+          className="bg-lava hover:bg-maroon text-white px-4 py-2 rounded-md font-bold shadow-md"
+        >
+          <FontAwesomeIcon fontSize={16} icon={faMagnifyingGlass} />
+          <span className="ml-2">Search</span>
+        </button>
+        <button
+          onClick={scrapeProperties}
+          className="bg-lava hover:bg-maroon text-white px-4 py-2 rounded-md font-bold shadow-md"
+        >
+          <FontAwesomeIcon fontSize={16} icon={faTrowel} />
+          <span className="ml-2">Scrape</span>
+        </button>
+      </div>
 
-      <div className="flex w-[90%] flex-col items-center justify-start">
-        <div className="flex w-full justify-center gap-4 mb-4">
-          <input
-            className="p-2 rounded-sm"
-            type="text"
-            placeholder="Name"
-            ref={nameRef}
-            onKeyUp={(e) => {
-              if (e.key == "Enter") getProperties();
-            }}
-          />
-          <input
-            className="p-2 rounded-sm"
-            type="text"
-            placeholder="City"
-            ref={cityRef}
-            onKeyUp={(e) => {
-              if (e.key == "Enter") getProperties();
-            }}
-          />
-          <input
-            className="p-2 rounded-sm"
-            type="text"
-            placeholder="State"
-            ref={stateRef}
-            onKeyUp={(e) => {
-              if (e.key == "Enter") getProperties();
-            }}
-          />
-          <button
-            onClick={getProperties}
-            className="bg-sky-400 hover:bg-sky-300 px-4 py-2 rounded-md font-bold"
-          >
-            Search
-          </button>
-          <button
-            onClick={scrapeProperties}
-            className="bg-lime-500 hover:bg-lime-400 px-4 py-2 rounded-md font-bold"
-          >
-            Scrape
-          </button>
-        </div>
+      <div className="bg-white w-[90%] px-6 py-4 rounded-lg shadow-md">
         <table className="w-full text-center">
           <thead>
-            <tr className="border-r-2 bg-slate-500 text-white">
+            <tr className="text-red-800 border-b-2">
               <th className="text-left px-4 py-2">Name</th>
               <th className="text-left px-4 py-2">Address</th>
               <th className="text-left px-4 py-2">City</th>
@@ -197,7 +200,7 @@ export default function Home() {
           </thead>
           <tbody>
             {properties.map((property, index) => (
-              <tr className="border-r-2 shadow-md bg-white" key={index}>
+              <tr className="" key={index}>
                 <td className="text-left underline text-blue-400 px-4 py-2">
                   <Link
                     key={index}
